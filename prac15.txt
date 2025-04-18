@@ -1,0 +1,126 @@
+Q1 
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/btnShowToast"
+        android:text="Show Toast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>
+
+package com.example.toastexample;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    Button btnShowToast;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        btnShowToast = findViewById(R.id.btnShowToast);
+
+        btnShowToast.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "Message for you:\nYou have got mail!", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+}
+
+Q2 
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center">
+
+    <CheckBox
+        android:id="@+id/chkPizza"
+        android:text="Pizza"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <CheckBox
+        android:id="@+id/chkCoffee"
+        android:text="Coffee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <CheckBox
+        android:id="@+id/chkBurger"
+        android:text="Burger"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btnOrder"
+        android:text="ORDER"
+        android:layout_marginTop="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
+
+package com.example.checkboxorder;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    CheckBox chkPizza, chkCoffee, chkBurger;
+    Button btnOrder;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        chkPizza = findViewById(R.id.chkPizza);
+        chkCoffee = findViewById(R.id.chkCoffee);
+        chkBurger = findViewById(R.id.chkBurger);
+        btnOrder = findViewById(R.id.btnOrder);
+
+        btnOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int total = 0;
+                StringBuilder result = new StringBuilder("Selected Items:");
+
+                if (chkPizza.isChecked()) {
+                    result.append("\nPizza 100Rs");
+                    total += 100;
+                }
+                if (chkCoffee.isChecked()) {
+                    result.append("\nCoffee 50Rs");
+                    total += 50;
+                }
+                if (chkBurger.isChecked()) {
+                    result.append("\nBurger 120Rs");
+                    total += 120;
+                }
+
+                result.append("\nTotal: ").append(total).append("Rs");
+
+                Toast.makeText(getApplicationContext(), result.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+}

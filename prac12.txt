@@ -1,0 +1,129 @@
+1. Layout XML File (activity_main.xml)
+xml
+Copy
+Edit
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Standalone Radio Buttons -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Single Radio Buttons"
+        android:textSize="18sp"
+        android:paddingBottom="8dp" />
+
+    <RadioButton
+        android:id="@+id/radio1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Radio Button 1" />
+
+    <RadioButton
+        android:id="@+id/radio2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Radio Button 2" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#cccccc"
+        android:layout_marginVertical="16dp"/>
+
+    <!-- RadioButtons inside RadioGroup -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Radio button inside RadioGroup"
+        android:textSize="18sp"
+        android:paddingBottom="8dp" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/radioMale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Male" />
+
+        <RadioButton
+            android:id="@+id/radioFemale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Female" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btnShowSelected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SHOW SELECTED"
+        android:layout_marginTop="16dp" />
+</LinearLayout>
+2. Java Code (MainActivity.java)
+java
+Copy
+Edit
+package com.example.radiobuttonexample;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    RadioButton radio1, radio2, radioMale, radioFemale;
+    RadioGroup radioGroup;
+    Button btnShowSelected;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Single RadioButtons
+        radio1 = findViewById(R.id.radio1);
+        radio2 = findViewById(R.id.radio2);
+
+        // RadioGroup and its buttons
+        radioGroup = findViewById(R.id.radioGroup);
+        radioMale = findViewById(R.id.radioMale);
+        radioFemale = findViewById(R.id.radioFemale);
+
+        btnShowSelected = findViewById(R.id.btnShowSelected);
+
+        // Click listeners for standalone buttons
+        radio1.setOnClickListener(view -> {
+            radio2.setChecked(false);
+            Toast.makeText(this, "Radio Button 1 Selected", Toast.LENGTH_SHORT).show();
+        });
+
+        radio2.setOnClickListener(view -> {
+            radio1.setChecked(false);
+            Toast.makeText(this, "Radio Button 2 Selected", Toast.LENGTH_SHORT).show();
+        });
+
+        // Button click for RadioGroup selection
+        btnShowSelected.setOnClickListener(view -> {
+            int selectedId = radioGroup.getCheckedRadioButtonId();
+            if (selectedId != -1) {
+                RadioButton selectedRadio = findViewById(selectedId);
+                Toast.makeText(this, selectedRadio.getText() + " Selected", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "No gender selected", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+}

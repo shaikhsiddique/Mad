@@ -1,0 +1,223 @@
+1. Program to Create a Login Form for a Social Networking Site
+🔹 activity_login_social.xml (XML Layout)
+xml
+Copy
+Edit
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="30dp"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Social Networking Login"
+        android:textSize="24sp"
+        android:layout_marginBottom="30dp" />
+
+    <EditText
+        android:id="@+id/editTextUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Username"
+        android:inputType="textEmailAddress"
+        android:layout_marginBottom="20dp"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:layout_marginBottom="20dp"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:textSize="18sp"
+        android:background="@android:color/holo_blue_dark"
+        android:textColor="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/registerLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Don't have an account? Register here"
+        android:textColor="@android:color/holo_blue_dark"
+        android:layout_marginTop="20dp"
+        android:gravity="center" />
+</LinearLayout>
+
+🔹 LoginActivity.java (Java Code)
+java
+Copy
+Edit
+package com.example.socialnetworkingapp;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class LoginActivity extends AppCompatActivity {
+
+    private EditText mUsernameEditText, mPasswordEditText;
+    private Button mLoginButton;
+    private TextView mRegisterLink;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login_social);
+
+        mUsernameEditText = findViewById(R.id.editTextUsername);
+        mPasswordEditText = findViewById(R.id.editTextPassword);
+        mLoginButton = findViewById(R.id.loginButton);
+        mRegisterLink = findViewById(R.id.registerLink);
+
+        mLoginButton.setOnClickListener(v -> {
+            String username = mUsernameEditText.getText().toString();
+            String password = mPasswordEditText.getText().toString();
+
+            if (username.isEmpty() || password.isEmpty()) {
+                Toast.makeText(LoginActivity.this, "Please enter both username and password.", Toast.LENGTH_SHORT).show();
+            } else {
+                // You would verify username and password with a database here
+                Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        mRegisterLink.setOnClickListener(v -> {
+            // Redirect to registration screen (implement the logic accordingly)
+            Toast.makeText(LoginActivity.this, "Redirect to registration screen.", Toast.LENGTH_SHORT).show();
+        });
+    }
+}
+
+LoginActivity.java (Java code for the login logic):
+java
+Copy
+Edit
+package com.example.studentregistrationsystem;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class LoginActivity extends AppCompatActivity {
+
+    private EditText mUsernameEditText, mPasswordEditText;
+    private Button mLoginButton;
+    private TextView mRegisterLink;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+        // Initialize views
+        mUsernameEditText = findViewById(R.id.editTextUsername);
+        mPasswordEditText = findViewById(R.id.editTextPassword);
+        mLoginButton = findViewById(R.id.loginButton);
+        mRegisterLink = findViewById(R.id.registerLink);
+
+        // Set onClickListener for login button
+        mLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String username = mUsernameEditText.getText().toString();
+                String password = mPasswordEditText.getText().toString();
+
+                // Validate inputs
+                if (username.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(LoginActivity.this, "Please enter both username and password.", Toast.LENGTH_SHORT).show();
+                } else {
+                    // For simplicity, assume successful login if both fields are filled
+                    // You can replace this part with actual authentication logic
+                    Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
+                    // Redirect to next activity (e.g., StudentDashboardActivity)
+                    // Intent intent = new Intent(LoginActivity.this, StudentDashboardActivity.class);
+                    // startActivity(intent);
+                }
+            }
+        });
+
+        // Set onClickListener for register link
+        mRegisterLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // You can redirect to the registration page here
+                Toast.makeText(LoginActivity.this, "Redirect to registration screen.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+}
+activity_login.xml (XML Layout for the login form):
+xml
+Copy
+Edit
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="30dp"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Student Login"
+        android:textSize="24sp"
+        android:layout_marginBottom="30dp" />
+
+    <EditText
+        android:id="@+id/editTextUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Username"
+        android:inputType="textEmailAddress"
+        android:layout_marginBottom="20dp"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:layout_marginBottom="20dp"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:textSize="18sp"
+        android:background="@android:color/holo_blue_dark"
+        android:textColor="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/registerLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Don't have an account? Register here"
+        android:textColor="@android:color/holo_blue_dark"
+        android:layout_marginTop="20dp"
+        android:gravity="center" />
+</LinearLayout>

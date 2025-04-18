@@ -1,0 +1,161 @@
+Step-by-Step Implementation:
+Open Android Studio: Start by creating a new project in Android Studio or use an existing project.
+
+Create a new class for SQLite Database Helper: This class will manage the creation of your SQLite database.
+
+Right-click on the java folder in your app/src/main/java directory.
+
+Choose New -> Java Class.
+
+Name the class DatabaseHelper and copy the code for creating the database.
+
+DatabaseHelper.java:
+
+package com.example.captureimage;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class DatabaseHelper extends SQLiteOpenHelper {
+
+    private static final String DATABASE_NAME = "MyDatabase.db";
+    private static final int DATABASE_VERSION = 1;
+
+    public static final String TABLE_NAME = "UserTable";
+    public static final String COLUMN_ID = "id";
+    public static final String COLUMN_NAME = "name";
+    public static final String COLUMN_AGE = "age";
+
+    private static final String CREATE_TABLE =
+            "CREATE TABLE " + TABLE_NAME + " (" +
+                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_NAME + " TEXT, " +
+                    COLUMN_AGE + " INTEGER);";
+
+    public DatabaseHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL(CREATE_TABLE);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        onCreate(db);
+    }
+}
+
+Create an AsyncTask for inserting data into the database:
+
+Right-click on the java folder and create a new class called InsertDataTask.
+
+Copy the following code into InsertDataTask.java.
+
+InsertDataTask.java:
+package com.example.captureimage;
+
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
+
+public class InsertDataTask extends AsyncTask<Void, Void, Void> {
+
+    private DatabaseHelper dbHelper;
+    private String name;
+    private int age;
+
+    public InsertDataTask(DatabaseHelper dbHelper, String name, int age) {
+        this.dbHelper = dbHelper;
+        this.name = name;
+        this.age = age;
+    }
+
+    @Override
+    protected Void doInBackground(Void... voids) {
+        // Open database for writing
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // Prepare the data to insert
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.COLUMN_NAME, name);
+        values.put(DatabaseHelper.COLUMN_AGE, age);
+
+        // Insert the data
+        db.insert(DatabaseHelper.TABLE_NAME, null, values);
+
+        db.close(); // Close the database
+        return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        // You can update the UI here if needed after the data is inserted.
+    }
+}
+Modify the MainActivity to trigger the AsyncTask:
+
+Open MainActivity.java and use the AsyncTask to insert data when the button is clicked.
+
+MainActivity.java:
+
+package com.example.captureimage;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    private DatabaseHelper dbHelper;
+    private Button insertButton;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        dbHelper = new DatabaseHelper(this); // Initialize the database helper
+        insertButton = findViewById(R.id.insert_button); // Find the button in the layout
+
+        // Set an OnClickListener on the button
+        insertButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create an AsyncTask to insert data into the database
+                new InsertDataTask(dbHelper, "John Doe", 30).execute(); // Example data
+            }
+        });
+    }
+}
+Create the XML layout file for MainActivity:
+
+In the res/layout folder, create or modify activity_main.xml to have a button for inserting data into the database.
+
+activity_main.xml:
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:padding="24dp">
+
+    <Button
+        android:id="@+id/insert_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Insert Data" />
+
+</LinearLayout>
+Run the App:
+
+Build and run the application on an emulator or real device.
+
+Click the "Insert Data" button. This will trigger the InsertDataTask, which will insert data into the database in the background.

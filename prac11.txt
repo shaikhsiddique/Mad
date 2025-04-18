@@ -1,0 +1,98 @@
+MainActivity.java
+
+package com.example.checkboxexample;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    CheckBox checkBox1, checkBox2, checkBox3, checkBox4, checkBox5;
+    Button showSelectedButton;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        checkBox1 = findViewById(R.id.checkBox1);
+        checkBox2 = findViewById(R.id.checkBox2);
+        checkBox3 = findViewById(R.id.checkBox3);
+        checkBox4 = findViewById(R.id.checkBox4);
+        checkBox5 = findViewById(R.id.checkBox5);
+        showSelectedButton = findViewById(R.id.showButton);
+
+        showSelectedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StringBuilder selected = new StringBuilder("Selected: ");
+                if (checkBox1.isChecked()) selected.append(checkBox1.getText()).append(", ");
+                if (checkBox2.isChecked()) selected.append(checkBox2.getText()).append(", ");
+                if (checkBox3.isChecked()) selected.append(checkBox3.getText()).append(", ");
+                if (checkBox4.isChecked()) selected.append(checkBox4.getText()).append(", ");
+                if (checkBox5.isChecked()) selected.append(checkBox5.getText()).append(", ");
+
+                if (selected.toString().equals("Selected: ")) {
+                    Toast.makeText(MainActivity.this, "No checkbox selected", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Remove last comma and space
+                    selected.setLength(selected.length() - 2);
+                    Toast.makeText(MainActivity.this, selected.toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+}
+✅ activity_main.xml
+xml
+Copy
+Edit
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center_horizontal">
+
+    <CheckBox
+        android:id="@+id/checkBox1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Option 1" />
+
+    <CheckBox
+        android:id="@+id/checkBox2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Option 2" />
+
+    <CheckBox
+        android:id="@+id/checkBox3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Option 3" />
+
+    <CheckBox
+        android:id="@+id/checkBox4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Option 4" />
+
+    <CheckBox
+        android:id="@+id/checkBox5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Option 5" />
+
+    <Button
+        android:id="@+id/showButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Selected"
+        android:layout_marginTop="20dp" />
+</LinearLayout>

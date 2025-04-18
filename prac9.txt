@@ -1,0 +1,253 @@
+1. Program to Create a Toggle Button to Display ON/OFF Bluetooth Status
+🔹 activity_bluetooth.xml (XML Layout)
+xml
+Copy
+Edit
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:gravity="center">
+
+    <ToggleButton
+        android:id="@+id/toggleBluetooth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOff="Bluetooth OFF"
+        android:textOn="Bluetooth ON"
+        android:checked="false" />
+
+    <TextView
+        android:id="@+id/statusText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bluetooth is OFF"
+        android:textSize="18sp"
+        android:layout_marginTop="20dp"
+        android:textColor="#000000" />
+</LinearLayout>
+🔹 BluetoothActivity.java (Java Code)
+java
+Copy
+Edit
+package com.example.bluetoothapp;
+
+import android.bluetooth.BluetoothAdapter;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.ToggleButton;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class BluetoothActivity extends AppCompatActivity {
+
+    private BluetoothAdapter mBluetoothAdapter;
+    private TextView mStatusText;
+    private ToggleButton mToggleBluetooth;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_bluetooth);
+
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        mStatusText = findViewById(R.id.statusText);
+        mToggleBluetooth = findViewById(R.id.toggleBluetooth);
+
+        if (mBluetoothAdapter == null) {
+            mStatusText.setText("Bluetooth not supported on this device.");
+            mToggleBluetooth.setEnabled(false);
+            return;
+        }
+
+        mToggleBluetooth.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                mBluetoothAdapter.enable();
+                mStatusText.setText("Bluetooth is ON");
+            } else {
+                mBluetoothAdapter.disable();
+                mStatusText.setText("Bluetooth is OFF");
+            }
+        });
+    }
+}
+
+2. Program to Create a Simple Calculator
+🔹 activity_calculator.xml (XML Layout)
+xml
+Copy
+Edit
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:gravity="center">
+
+    <EditText
+        android:id="@+id/editTextResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Result"
+        android:textSize="24sp"
+        android:gravity="right"
+        android:inputType="none"
+        android:focusable="false" />
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="4"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3" />
+
+        <Button
+            android:id="@+id/buttonAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+" />
+
+        <!-- Add more buttons for other numbers and operations here -->
+        <!-- Follow the same structure for numbers 4-9, operations like -, *, and / -->
+        
+        <Button
+            android:id="@+id/buttonEquals"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="=" />
+
+        <Button
+            android:id="@+id/buttonClear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="C" />
+    </GridLayout>
+</LinearLayout>
+🔹 CalculatorActivity.java (Java Code)
+java
+Copy
+Edit
+package com.example.calculatorapp;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class CalculatorActivity extends AppCompatActivity {
+
+    private EditText mResultEditText;
+    private String mCurrentInput = "";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_calculator);
+
+        mResultEditText = findViewById(R.id.editTextResult);
+
+        // Number buttons
+        Button button1 = findViewById(R.id.button1);
+        Button button2 = findViewById(R.id.button2);
+        Button button3 = findViewById(R.id.button3);
+        Button button4 = findViewById(R.id.button4);
+        Button button5 = findViewById(R.id.button5);
+        Button button6 = findViewById(R.id.button6);
+        Button button7 = findViewById(R.id.button7);
+        Button button8 = findViewById(R.id.button8);
+        Button button9 = findViewById(R.id.button9);
+        Button button0 = findViewById(R.id.button0);
+
+        // Operation buttons
+        Button buttonAdd = findViewById(R.id.buttonAdd);
+        Button buttonSub = findViewById(R.id.buttonSub);
+        Button buttonMul = findViewById(R.id.buttonMul);
+        Button buttonDiv = findViewById(R.id.buttonDiv);
+        Button buttonEquals = findViewById(R.id.buttonEquals);
+        Button buttonClear = findViewById(R.id.buttonClear);
+
+        // Set onClickListeners for number buttons
+        View.OnClickListener numberClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Button button = (Button) v;
+                mCurrentInput += button.getText().toString();
+                mResultEditText.setText(mCurrentInput);
+            }
+        };
+
+        button1.setOnClickListener(numberClickListener);
+        button2.setOnClickListener(numberClickListener);
+        button3.setOnClickListener(numberClickListener);
+        button4.setOnClickListener(numberClickListener);
+        button5.setOnClickListener(numberClickListener);
+        button6.setOnClickListener(numberClickListener);
+        button7.setOnClickListener(numberClickListener);
+        button8.setOnClickListener(numberClickListener);
+        button9.setOnClickListener(numberClickListener);
+        button0.setOnClickListener(numberClickListener);
+
+        // Operation buttons
+        View.OnClickListener operationClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Button button = (Button) v;
+                mCurrentInput += button.getText().toString();
+                mResultEditText.setText(mCurrentInput);
+            }
+        };
+
+        buttonAdd.setOnClickListener(operationClickListener);
+        buttonSub.setOnClickListener(operationClickListener);
+        buttonMul.setOnClickListener(operationClickListener);
+        buttonDiv.setOnClickListener(operationClickListener);
+
+        // Equals button
+        buttonEquals.setOnClickListener(v -> {
+            // Perform calculation (a basic example, no error handling for complex expressions)
+            try {
+                double result = evaluateExpression(mCurrentInput);
+                mResultEditText.setText(String.valueOf(result));
+                mCurrentInput = String.valueOf(result);
+            } catch (Exception e) {
+                mResultEditText.setText("Error");
+            }
+        });
+
+        // Clear button
+        buttonClear.setOnClickListener(v -> {
+            mCurrentInput = "";
+            mResultEditText.setText("");
+        });
+    }
+
+    private double evaluateExpression(String expression) {
+        // Simple evaluation method (needs to be expanded for a complete calculator)
+        // You could use Java's ScriptEngine or other methods for proper evaluation
+        // This is just a basic example and doesn't support complex expressions
+        return new ScriptEngineManager().getEngineByName("rhino").eval(expression);
+    }
+}
